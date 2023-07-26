@@ -36,13 +36,15 @@ Future<CurrentWeather> fetchMeteo() async {
 class CurrentWeather {
   final double? temperature;
   final double? windSpeed;
+  final double? windDirection;
 
-  const CurrentWeather({this.temperature, this.windSpeed});
+  const CurrentWeather({this.temperature, this.windSpeed, this.windDirection});
 
   factory CurrentWeather.fromJson(Map<String, dynamic> json) {
     return CurrentWeather(
       temperature: json['current_weather']['temperature']?.toDouble(),
       windSpeed: json['current_weather']['windspeed']?.toDouble(),
+      windDirection: json['current_weather']['winddirection']?.toDouble(),
     );
   }
 }
@@ -133,40 +135,167 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Column(
-            children: <Widget>[
-                Icon(Icons.wind_power),
-              FutureBuilder<CurrentWeather>(
-                future: futureMeteo,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    String windSpeedString = "${snapshot.data!.windSpeed} m/s";
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          windSpeedString,
-                          style: TextStyle(
-                            fontSize: 30,
-                            color: Colors.black,
-                          ),
+            Column(
+                children: <Widget>[
+
+            Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20)
+              ),
+              color: Colors.white70,
+              elevation: 20,
+              margin: EdgeInsets.all(15),
+              child:          Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                        Icon(Icons.wind_power),
+                        FutureBuilder<CurrentWeather>(
+                          future: futureMeteo,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              String windSpeedString = "${snapshot.data!.windSpeed} m/s";
+                              return Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    windSpeedString,
+                                    style: TextStyle(
+                                      fontSize: 30,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ],
+                              );
+                            } else if (snapshot.hasError) {
+                              return Text('${snapshot.error}');
+                            }
+                            // By default, show a loading spinner.
+                            return const CircularProgressIndicator();
+                          },
+                        ),
+                ],
+              ),
+            ),
+
+                  Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)
+                    ),
+                    color: Colors.white70,
+                    elevation: 20,
+                    margin: EdgeInsets.all(15),
+                    child:          Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        Icon(Icons.navigation),
+                        FutureBuilder<CurrentWeather>(
+                          future: futureMeteo,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              String windSpeedString = "${snapshot.data!.windDirection}0 °";
+                              return Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    windSpeedString,
+                                    style: TextStyle(
+                                      fontSize: 30,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ],
+                              );
+                            } else if (snapshot.hasError) {
+                              return Text('${snapshot.error}');
+                            }
+                            // By default, show a loading spinner.
+                            return const CircularProgressIndicator();
+                          },
                         ),
                       ],
-                    );
-                  } else if (snapshot.hasError) {
-                    return Text('${snapshot.error}');
-                  }
-                  // By default, show a loading spinner.
-                  return const CircularProgressIndicator();
-                },
+                    ),
+                  ),
+
+
+                  Card(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)
               ),
-            ]
-                ),
-                Icon(Icons.sunny),
-              ],
+              color: Colors.white70,
+              elevation: 20,
+              margin: EdgeInsets.all(15),
+              child:          Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Icon(Icons.sunny),
+                  FutureBuilder<CurrentWeather>(
+                    future: futureMeteo,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        String windSpeedString = "${snapshot.data!.temperature} °";
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              windSpeedString,
+                              style: TextStyle(
+                                fontSize: 30,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        );
+                      } else if (snapshot.hasError) {
+                        return Text('${snapshot.error}');
+                      }
+                      // By default, show a loading spinner.
+                      return const CircularProgressIndicator();
+                    },
+                  ),
+                ],
+              ),
+            ),
+
+
+                  Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)
+                    ),
+                    color: Colors.white70,
+                    elevation: 20,
+                    margin: EdgeInsets.all(15),
+                    child:          Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        Icon(Icons.location_on),
+                        FutureBuilder<CurrentWeather>(
+                          future: futureMeteo,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              String windSpeedString = "Gps On";
+                              return Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    windSpeedString,
+                                    style: TextStyle(
+                                      fontSize: 25,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ],
+                              );
+                            } else if (snapshot.hasError) {
+                              return Text('${snapshot.error}');
+                            }
+                            // By default, show a loading spinner.
+                            return const CircularProgressIndicator();
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ]
             ),
           ],
         ),

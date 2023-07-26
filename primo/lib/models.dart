@@ -1,17 +1,14 @@
-class Album {
-  final int userId;
-  final int id;
-  final String title;
+class CurrentWeather {
+  final double? temperature;
+  final double? windSpeed;
 
-  const Album({required this.userId, required this.id, required this.title,});
+  const CurrentWeather({this.temperature, this.windSpeed});
 
-  factory Album.fromJson(Map<String, dynamic> json) {
-    return Album(
-      userId: json['userId'],
-      id: json['id'],
-      title: json['title'],
+  factory CurrentWeather.fromJson(Map<String, dynamic> json) {
+    return CurrentWeather(
+      temperature: json['current_weather']['temperature']?.toDouble(),
+      windSpeed: json['current_weather']['windspeed']?.toDouble(),
     );
   }
 }
-
 
