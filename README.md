@@ -2,7 +2,7 @@
 
 Senza aver mai sviluppato nulla in dart, provare a consegnare in 6 giorni circa.
 
-La Challenge è stata completata nei punti 1 e 3 il giorno successivo.
+La Challenge è stata completata nei punti 1, 2 e 3 il giorno successivo.
 
 Weather Challenge
 
