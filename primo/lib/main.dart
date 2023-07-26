@@ -2,11 +2,31 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:location/location.dart';
 
 Future<CurrentWeather> fetchMeteo() async {
-  final response = await http.get(Uri.parse('https://api.open-meteo.com/v1/forecast?latitude=41.9027835&longitude=12.4963655&hourly=temperature_2m&current_weather=true'));
+
+  Location location = new Location();
+
+  bool _serviceEnabled;
+  PermissionStatus _permissionGranted;
+  LocationData _locationData;
+
+  _serviceEnabled = await location.serviceEnabled();
+  if (!_serviceEnabled) {
+    _serviceEnabled = await location.requestService();
+  }
+
+  _permissionGranted = await location.hasPermission();
+  if (_permissionGranted == PermissionStatus.denied) {
+    _permissionGranted = await location.requestPermission();
+  }
+
+  _locationData = await location.getLocation();
+  print(_locationData.latitude);
+
+  final response = await http.get(Uri.parse('https://api.open-meteo.com/v1/forecast?latitude='+'${_locationData.latitude}'+'&longitude='+'${_locationData.longitude}'+'&hourly=temperature_2m&current_weather=true'));
   if (response.statusCode == 200) {
-    print("hello");
     return CurrentWeather.fromJson(jsonDecode(response.body));
   } else {
     throw Exception('Failed to load meteo');
@@ -152,9 +172,35 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () async {
+
+          Location location = new Location();
+
+      bool _serviceEnabled;
+      PermissionStatus _permissionGranted;
+      LocationData _locationData;
+
+      _serviceEnabled = await location.serviceEnabled();
+      if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+      return;
+      }
+      }
+
+      _permissionGranted = await location.hasPermission();
+      if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+      return;
+      }
+      }
+
+      _locationData = await location.getLocation();
+      print(_locationData.latitude);
+      },
         tooltip: 'Increment',
-        child: const Icon(Icons.cloud),
+        child: const Icon(Icons.my_location),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
