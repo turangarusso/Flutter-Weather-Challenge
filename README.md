@@ -2,7 +2,7 @@
 
 Senza aver mai sviluppato nulla in dart, provare a consegnare in 6 giorni circa.
 
-![CatturaHome](https://github.com/turangarusso/Flutter-Weather-Challenge/assets/113531412/17ab1f7d-9ef8-4bbf-b38d-58d3fe999738)
+![Cattura2](https://github.com/turangarusso/Flutter-Weather-Challenge/assets/113531412/2671a79c-0050-4fe7-8bd5-58245d6487fb)
 
 La Challenge è stata completata nei punti 1, 2 e 3 il giorno successivo.
 
